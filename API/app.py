@@ -7,6 +7,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def wrong_addr_at_root_dir():
+    dbm.connection_tester()
     return 'Wrong address at FMP Root Dir'
 
 
@@ -32,5 +33,4 @@ def do_this():
 
 
 if __name__ == "__main__":
-    dbm.connection_tester()
     app.run(host="localhost", port=8000, debug=True)
