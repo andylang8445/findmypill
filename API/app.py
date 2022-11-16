@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import db_communicate as dbm
+import json
 import sys
 
 app = Flask(__name__)
@@ -7,8 +8,15 @@ app = Flask(__name__)
 
 @app.route('/')
 def wrong_addr_at_root_dir():
-    dbm.connection_tester()
     return 'Wrong address at FMP Root Dir'
+
+
+@app.route('/grep_all', methods=['GET'])
+def grep_all_from_db():
+    all_data = dbm.connection_tester()
+    print(str(all_data))
+    return jsonify(all_data)
+
 
 
 @app.route('/hello')

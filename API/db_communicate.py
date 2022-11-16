@@ -25,6 +25,7 @@ def connection_tester():
     ingredient_cur.execute(
         f"SELECT Code FROM {c.table['ingredient']}"
     )
+    return_val = []
     element_li = []
     for (i,) in ingredient_cur:
         element_li.append(int(i))
@@ -32,9 +33,11 @@ def connection_tester():
     cur.execute(
         f"SELECT * FROM {c.table['pill']}"
     )
-    for (name, element, id_code) in cur:
+    for (name, element, id_code, din_code, company_name, dose_form, how_to_consume) in cur:
+        sub_dict = dict()
         print(f"Name of the pill: {name}, ", end="[")
         li = element.split(',')
+        sub_li = list()
         for i in li:
             ingredient, amount = i.split(':')
             if int(ingredient) in element_li:
@@ -42,7 +45,29 @@ def connection_tester():
                 ingredient_cur.execute(
                     f"SELECT Ingredient FROM {c.table['ingredient']} WHERE Code = {ingredient}"
                 )
-                print("[ingredient: ", list(ingredient_cur)[0][0], ", amount = ", amount, end="mg], ")
+                tmp_ingredient = list(ingredient_cur)[0][0]
+                sub_li.append({tmp_ingredient: str(amount)+"mg"})
+                print("[ingredient: ", tmp_ingredient, ", amount = ", amount, end="mg], ")
             elif int(ingredient) != -1:
                 print(f"[Unknown ingredient! Please check DB! (Unknown ingredient: {ingredient})], ", end=", ")
-        print("], id: ", id_code)
+        sub_dict['ingredient'] = sub_li
+        if len(str(id_code)) == 0:
+            id_code = 'N/A'
+        if len(din_code) == 0:
+            din_code = 'N/A'
+        if len(company_name) == 0:
+            company_name = 'N/A'
+        if len(dose_form) == 0:
+            dose_form = 'N/A'
+        if len(how_to_consume) == 0:
+            how_to_consume = 'N/A'
+        sub_dict['name'] = name
+        sub_dict['id_code'] = id_code
+        sub_dict['din_code'] = din_code
+        sub_dict['company_name'] = company_name
+        sub_dict['dose_form'] = dose_form
+        sub_dict['how_to_consume'] = how_to_consume
+        print(
+            f"], id: {id_code}, DIN code: {din_code}, Produced by: {company_name}, Form: {dose_form}, Route of Administration: {how_to_consume}")
+        return_val.append(sub_dict)
+    return return_val

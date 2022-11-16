@@ -1,0 +1,47 @@
+[
+  {
+    "company_name": "JOHNSON & JOHNSON INC",
+    "din_code": "02276186",
+    "dose_form": "Tablet",
+    "how_to_consume": "Oral",
+    "id_code": 1,
+    "ingredient": [
+      {
+        "ACETAMINOPHEN": "500mg"
+      },
+      {
+        "DEXTROMETHORPHAN HYDROBROMIDE": "10mg"
+      },
+      {
+        "PHENYLEPHRINE HYDROCHLORIDE": "5mg"
+      }
+    ],
+    "name": "EXTRA STRENGTH TYLENOL COLD DAYTIME"
+  },
+  {
+    "company_name": "JOHNSON & JOHNSON INC",
+    "din_code": "00559407",
+    "dose_form": "Tablet",
+    "how_to_consume": "Oral",
+    "id_code": 4,
+    "ingredient": [
+      {
+        "ACETAMINOPHEN": "500mg"
+      }
+    ],
+    "name": "TYLENOL EXTRA STRENGTH"
+  },
+  {
+    "company_name": "JOHNSON & JOHNSON INC",
+    "din_code": "00559407",
+    "dose_form": "Suspension",
+    "how_to_consume": "Oral",
+    "id_code": 5,
+    "ingredient": [
+      {
+        "ACETAMINOPHEN": "160mg"
+      }
+    ],
+    "name": "TYLENOL EXTRA STRENGTH"
+  }
+]
