@@ -21,23 +21,28 @@ def connection_tester():
 
     # Get Cursor
     print("Connection to DB Successful")
+    ingredient_cur = conn.cursor()
+    ingredient_cur.execute(
+        f"SELECT Code FROM {c.table['ingredient']}"
+    )
+    element_li = []
+    for (i,) in ingredient_cur:
+        element_li.append(int(i))
     cur = conn.cursor()
     cur.execute(
-        "SELECT * FROM test"
+        f"SELECT * FROM {c.table['pill']}"
     )
     for (name, element, id_code) in cur:
         print(f"Name of the pill: {name}, ", end="[")
         li = element.split(',')
         for i in li:
             ingredient, amount = i.split(':')
-            ingredient_cur = conn.cursor()
-            ingredient_cur.execute(
-                f"SELECT Ingredient FROM element WHERE Code = {ingredient}"
-            )
-            if ingredient != '-1':
+            if int(ingredient) in element_li:
+                ingredient_cur = conn.cursor()
+                ingredient_cur.execute(
+                    f"SELECT Ingredient FROM {c.table['ingredient']} WHERE Code = {ingredient}"
+                )
                 print("[ingredient: ", list(ingredient_cur)[0][0], ", amount = ", amount, end="mg], ")
-            else:
-                print("END of ingredients]")
-        print("id: ", id_code)
-
-
+            elif int(ingredient) != -1:
+                print(f"[Unknown ingredient! Please check DB! (Unknown ingredient: {ingredient})], ", end=", ")
+        print("], id: ", id_code)
