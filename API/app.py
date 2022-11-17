@@ -1,7 +1,5 @@
 from flask import Flask, request, jsonify
 import db_communicate as dbm
-import json
-import sys
 
 app = Flask(__name__)
 
@@ -16,7 +14,6 @@ def grep_all_from_db():
     all_data = dbm.connection_tester()
     print(str(all_data))
     return jsonify(all_data)
-
 
 
 @app.route('/hello')
