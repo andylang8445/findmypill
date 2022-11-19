@@ -23,7 +23,7 @@ def connection_tester():
     print("Connection to DB Successful")
     ingredient_cur = conn.cursor()
     ingredient_cur.execute(
-        f"SELECT Code FROM {c.table['ingredient']}"
+        "SELECT Code FROM %s",(c.table['ingredient'])
     )
     return_val = []
     element_li = []
@@ -31,7 +31,7 @@ def connection_tester():
         element_li.append(int(i))
     cur = conn.cursor()
     cur.execute(
-        f"SELECT * FROM {c.table['pill']}"
+        "SELECT * FROM %s", (c.table['pill'])
     )
     for (name, element, id_code, din_code, company_name, dose_form, how_to_consume) in cur:
         sub_dict = dict()
