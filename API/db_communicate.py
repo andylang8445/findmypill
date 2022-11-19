@@ -22,16 +22,14 @@ def connection_tester():
     # Get Cursor
     print("Connection to DB Successful")
     ingredient_cur = conn.cursor()
-    ingredient_cur.execute(
-        "SELECT Code FROM %s",(c.table['ingredient'])
-    )
+    ingredient_cur.execute("SELECT Code FROM %s" % str(c.table['ingredient']))
     return_val = []
     element_li = []
     for (i,) in ingredient_cur:
         element_li.append(int(i))
     cur = conn.cursor()
     cur.execute(
-        "SELECT * FROM %s", (c.table['pill'])
+        "SELECT * FROM %s" % str(c.table['pill'])
     )
     for (name, element, id_code, din_code, company_name, dose_form, how_to_consume) in cur:
         sub_dict = dict()
