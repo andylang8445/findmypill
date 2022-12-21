@@ -27,3 +27,25 @@ def search_by_din(din_code: str, alias_allowed: int):
         print("==========================================================================")
         sys.exit(1)
     return data_cnt, result_val
+
+
+def search_by_pill_id(pill_id: str, expected_to_exist: bool = False):
+    result = dbm.select_operator(c.table_info['pill-name-type'], ['*'], [f'id = {pill_id}'])
+    result_val = list()
+    data_cnt: int = 0
+    for (id_code, name, dose_form, company_name, how_to_consume, din_code) in result:
+        data_cnt += 1
+        sub_dict = dict()
+        sub_dict['pill_id'] = id_code
+        sub_dict['name'] = name
+        sub_dict['din_code'] = din_code
+        sub_dict['company_name'] = company_name
+        sub_dict['dose_form'] = dose_form
+        sub_dict['how_to_consume'] = how_to_consume
+        result_val.append(sub_dict)
+    if (not expected_to_exist) and data_cnt > 0:
+        print("==========================================================================")
+        print("Error: Conflict found in DB, DIN should be an UNIQUE value of each PILL")
+        print("==========================================================================")
+        sys.exit(1)
+    return data_cnt, result_val
