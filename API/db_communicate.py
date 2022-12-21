@@ -4,7 +4,7 @@ import sys
 import config as c
 
 
-def connection_tester():
+def viewer_obj_creator():
     # Connect to MariaDB Platform
     try:
         conn = mariadb.connect(
@@ -18,6 +18,28 @@ def connection_tester():
     except mariadb.Error as e:
         print(f"Error connecting to MariaDB Platform: {e}")
         sys.exit(1)
+    return conn
+
+
+def adder_obj_creator():
+    # Connect to MariaDB Platform
+    try:
+        add_conn = mariadb.connect(
+            user=c.adder['id'],
+            password=c.adder['pw'],
+            host=c.DB['host'],
+            port=c.DB['port'],
+            database=c.DB['db_name']
+
+        )
+    except mariadb.Error as e:
+        print(f"Error connecting to MariaDB Platform: {e}")
+        sys.exit(1)
+    return add_conn
+
+def connection_tester():
+    # Connect to MariaDB Platform
+    conn = viewer_obj_creator()
 
     # Get Cursor
     print("Connection to DB Successful")
@@ -54,24 +76,111 @@ def connection_tester():
         sub_dict['dose_form'] = dose_form
         sub_dict['how_to_consume'] = how_to_consume
         return_val.append(sub_dict)
+    conn.commit()
+    conn.close()
     return return_val
 
 
-def execute_new(query_str: str, data: tuple):
-    try:
-        conn = mariadb.connect(
-            user=c.viewer['id'],
-            password=c.viewer['pw'],
-            host=c.DB['host'],
-            port=c.DB['port'],
-            database=c.DB['db_name']
+def compareList(l1: list, l2: list):
+    l1c = list(l1.copy())
+    l2c = list(l2.copy())
+    l1c.sort()
+    l2c.sort()
+    if l1c == l2c:
+        return True
+    else:
+        return False
 
-        )
+
+def data_counter(source: str):
+    if source in list(c.table_info.values()):
+        conn = viewer_obj_creator()
+        counter_cur = conn.cursor()
+        counter_cur.execute("SELECT COUNT(*) FROM %s;" % source)
+        for i in counter_cur:
+            # print(i[0])
+            return i[0]
+    else:
+        print("Wrong SELECT FROM argument (table name mismatch)")
+        return -1
+
+
+
+def add_new_pill(info_dict: dict):
+    key_chain = set(info_dict.keys())
+    db_alias = list(c.columns_info['Pill_Specification'].keys())
+    if not compareList(key_chain, db_alias):
+        print("Given Data is not containing the correct data")
+        return -1
+    query_string = 'INSERT INTO ' + c.table_info['pill-name-type'] + ' ('
+    for i in range(len(db_alias)):
+        query_string += str(db_alias[i])
+        if i < (len(db_alias) - 1):
+            query_string += ','
+    query_string += ') VALUES ('
+    for i in range(len(db_alias)):
+        query_string += '"' + str(info_dict[str(db_alias[i])]) + '"'
+        if i < (len(db_alias) - 1):
+            query_string += ','
+        else:
+            query_string += ');'
+    print(query_string)
+    conn = adder_obj_creator()
+    new_pill_cur = conn.cursor()
+    try:
+        new_pill_cur.execute(query_string)
     except mariadb.Error as e:
-        print(f"Error connecting to MariaDB Platform: {e}")
-        sys.exit(1)
+        print(f'Error: {e}')
+    conn.commit()
+    conn.close()
+    return 200
+
+
+def add_new_ingredient(info_dict: dict):
+    return info_dict
+
+
+def select_operator(source: str, what: list = ['*'], condition: list = []):
+    query_string = "SELECT "
+    if len(what) == 1:
+        query_string += what[0].strip(' ').strip('\n').strip('\t')
+    elif len(what) == 0:
+        print("Wrong SELECT argument (No target to select from)")
+        return [-1]
+    else:
+        for i in range(len(what)):
+            tmp = str(what[i]).strip(' ', '\n', '\t')
+            query_string += tmp
+            if i < (len(what) - 1):
+                query_string += ','
+    query_string += ' FROM '
+    if source in list(c.table_info.values()):
+        query_string += source
+    else:
+        print("Wrong SELECT FROM argument (table name mismatch)")
+        return [-2]
+    if len(condition) == 0:
+        query_string += ';'
+    else:
+        query_string += ' WHERE '
+        for i in range(len(condition)):
+            query_string += condition[i]
+            if i < (len(condition) - 1):
+                query_string += ' and '
+        query_string += ';'
+    conn = viewer_obj_creator()
+    select_cur = conn.cursor()
+    select_cur.execute(query_string)
+    return select_cur
+
+
+
+def execute_new(query_str: str, data: tuple):
+    conn = viewer_obj_creator()
     cur = conn.cursor()
     cur.execute(
         query_str, data
     )
+    conn.commit()
+    conn.close()
     return cur
