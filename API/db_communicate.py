@@ -136,8 +136,64 @@ def add_new_pill(info_dict: dict):
     return 200
 
 
+def add_new_pill_ingredient_relationship(info_dict: dict()):
+    key_chain = set(info_dict.keys())
+    db_alias = list(c.columns_info['Pill_Info'].keys())
+    if not compareList(key_chain, db_alias):
+        print("Given Data is not containing the correct data")
+        return -1
+    query_string = 'INSERT INTO ' + c.table_info['pill-ingredient'] + ' ('
+    for i in range(len(db_alias)):
+        query_string += str(db_alias[i])
+        if i < (len(db_alias) - 1):
+            query_string += ','
+    query_string += ') VALUES ('
+    for i in range(len(db_alias)):
+        query_string += '"' + str(info_dict[str(db_alias[i])]) + '"'
+        if i < (len(db_alias) - 1):
+            query_string += ','
+        else:
+            query_string += ');'
+    print(query_string)
+    conn = adder_obj_creator()
+    new_pill_cur = conn.cursor()
+    try:
+        new_pill_cur.execute(query_string)
+    except mariadb.Error as e:
+        print(f'Error: {e}')
+    conn.commit()
+    conn.close()
+    return 200
+
+
 def add_new_ingredient(info_dict: dict):
-    return info_dict
+    key_chain = set(info_dict.keys())
+    db_alias = list(c.columns_info['Material_Info'].keys())
+    if not compareList(key_chain, db_alias):
+        print("Given Data is not containing the correct data")
+        return -1
+    query_string = 'INSERT INTO ' + c.table_info['ingredient'] + ' ('
+    for i in range(len(db_alias)):
+        query_string += str(db_alias[i])
+        if i < (len(db_alias) - 1):
+            query_string += ','
+    query_string += ') VALUES ('
+    for i in range(len(db_alias)):
+        query_string += '"' + str(info_dict[str(db_alias[i])]) + '"'
+        if i < (len(db_alias) - 1):
+            query_string += ','
+        else:
+            query_string += ');'
+    print(query_string)
+    conn = adder_obj_creator()
+    new_pill_cur = conn.cursor()
+    try:
+        new_pill_cur.execute(query_string)
+    except mariadb.Error as e:
+        print(f'Error: {e}')
+    conn.commit()
+    conn.close()
+    return 200
 
 
 def select_operator(source: str, what: list = ['*'], condition: list = []):
