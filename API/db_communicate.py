@@ -21,52 +21,38 @@ def connection_tester():
 
     # Get Cursor
     print("Connection to DB Successful")
+
     ingredient_cur = conn.cursor()
-    ingredient_cur.execute("SELECT Code FROM %s;" % str(c.table['ingredient']))
+    ingredient_cur.execute("SELECT * FROM %s;" % (c.table_info['ingredient']))
     return_val = []
-    element_li = []
-    for (i,) in ingredient_cur:
-        element_li.append(int(i))
-    cur = conn.cursor()
-    cur.execute(
-        "SELECT * FROM %s;" % str(c.table['pill'])
+    element_dict = dict()
+    for (i, name) in ingredient_cur:
+        element_dict[int(i)] = str(name)
+    pill_name_type_cur = conn.cursor()
+    pill_name_type_cur.execute(
+        "SELECT * FROM %s ORDER BY id;" % str(c.table_info['pill-name-type'])
     )
-    for (name, element, id_code, din_code, company_name, dose_form, how_to_consume) in cur:
+    for (id_code, name, dose_form, company_name, how_to_consume, din_code) in pill_name_type_cur:
+        print("AA")
         sub_dict = dict()
-        print(f"Name of the pill: {name}, ", end="[")
-        li = element.split(',')
-        sub_li = list()
-        for i in li:
-            ingredient, amount = i.split(':')
-            if int(ingredient) in element_li:
-                ingredient_cur = conn.cursor()
-                ingredient_cur.execute(
-                    "SELECT Ingredient FROM %s WHERE Code = %s;" % (str(c.table['ingredient']), ingredient)
-                )
-                tmp_ingredient = list(ingredient_cur)[0][0]
-                sub_li.append({tmp_ingredient: str(amount) + "mg"})
-                print("[ingredient: ", tmp_ingredient, ", amount = ", amount, end="mg], ")
-            elif int(ingredient) != -1:
-                print(f"[Unknown ingredient! Please check DB! (Unknown ingredient: {ingredient})], ", end=", ")
-        sub_dict['ingredient'] = sub_li
-        if len(str(id_code)) == 0:
-            id_code = 'N/A'
-        if len(din_code) == 0:
-            din_code = 'N/A'
-        if len(company_name) == 0:
-            company_name = 'N/A'
-        if len(dose_form) == 0:
-            dose_form = 'N/A'
-        if len(how_to_consume) == 0:
-            how_to_consume = 'N/A'
+        pill_ingredient_cur = conn.cursor()
+        pill_ingredient_cur.execute(
+            "SELECT %s,%s FROM %s WHERE id=%s;" % ('Material_Info', 'amount', c.table_info['pill-ingredient'], str(id_code))
+        )
+        print(f"Name of the pill: {name}, ", end="Ingredients: [")
+        mat_li = list()
+        for (material_id, amount) in pill_ingredient_cur:
+            tmp = [int(material_id), str(element_dict[int(material_id)]), int(str(amount).split(' ')[0]), str(amount).split(' ')[1]]
+            mat_li.append(tmp)
+            print("[ingredient id: %d, name: %s, amount: %d, unit: %s]" % (tmp[0], tmp[1], tmp[2], tmp[3]), end=', ')
+        print(f"], Pill id: {id_code}, Dose Form: {dose_form}, Produced By: {company_name}, Route of Administration: {how_to_consume}, DIN code: {din_code}")
+        sub_dict['pill_id'] = id_code
         sub_dict['name'] = name
-        sub_dict['id_code'] = id_code
+        sub_dict['ingredient'] = mat_li
         sub_dict['din_code'] = din_code
         sub_dict['company_name'] = company_name
         sub_dict['dose_form'] = dose_form
         sub_dict['how_to_consume'] = how_to_consume
-        print(
-            f"], id: {id_code}, DIN code: {din_code}, Produced by: {company_name}, Form: {dose_form}, Route of Administration: {how_to_consume}")
         return_val.append(sub_dict)
     return return_val
 

@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 import db_communicate as dbm
 
 app = Flask(__name__)
+app.config['JSON_SORT_KEYS'] = False
 
 
 @app.route('/')
