@@ -1,5 +1,6 @@
 import search_handler as sh
 import db_communicate as dbm
+import config as c
 
 
 def add_ingredient(ingredient_dict: dict(), din_code: str, pill_id: int = -1):
@@ -56,7 +57,21 @@ def add_ingredient(ingredient_dict: dict(), din_code: str, pill_id: int = -1):
     return 200
 
 
-
+def new_pill_id_generator():
+    existing_pill_cnt = int(dbm.data_counter(c.table_info['pill-name-type']))
+    val = dbm.select_operator(c.table_info['pill-name-type'], ['id'])
+    existing_pill_id_list = list()
+    for (i,) in val:
+        existing_pill_id_list.append(int(i))
+    existing_pill_id_list.sort()
+    print(existing_pill_cnt, existing_pill_id_list)
+    if existing_pill_id_list[-1] == existing_pill_cnt:
+        return existing_pill_cnt + 1
+    for i in range(1, existing_pill_cnt + 1):
+        if i not in existing_pill_id_list:
+            return i
+    else:
+        return existing_pill_id_list[-1] + 1
 
 
 
@@ -81,7 +96,7 @@ def add_pill_spec(name: str, company: str, type_info: str, consume_info: str, di
                 return "Perfect Duplicat Found in DB\nPlease check DB, Nothing added to DB", -9
 
     # proceed
-    pill_dict['id'] = int(dbm.data_counter('Pill_Specification')) + 1
+    pill_dict['id'] = new_pill_id_generator()
     print(pill_dict)
     val = dbm.add_new_pill(pill_dict)
     if val == 200:
