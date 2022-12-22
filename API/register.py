@@ -32,7 +32,7 @@ def add_ingredient(ingredient_dict: dict(), din_code: str, pill_id: int = -1):
         flag, resulting_li = sh.search_ingredient_by_name(str(ing))
         if flag:
             pill_info_add_queue.append({'id': pill_id, 'Material_Info': resulting_li[0][str(ing)],
-                                        'amount': f'{ingredient_dict[str(ing)][0]} {ingredient_dict[str(ing)][1]}'})
+                                        'amount': f'{ingredient_dict[str(each_ing)][0]} {ingredient_dict[str(each_ing)][1]}'})
         else:
             tmp_ingredient_code = int(len(material_info_add_queue) + dbm.data_counter('Material_Info') + 1)
             pill_info_add_queue.append({'id': pill_id, 'Material_Info': tmp_ingredient_code,
@@ -41,17 +41,17 @@ def add_ingredient(ingredient_dict: dict(), din_code: str, pill_id: int = -1):
     for line in material_info_add_queue:
         val = dbm.add_new_ingredient(line)
         if val == 200:
-            print(f'Ingredient ID {line["id"]} have ben added to DB')
+            print(f'\tIngredient ID {line["id"]} have ben added to DB')
         else:
             print(f"ERROR Occurred while adding Ingredient ID {line['id']} to DB")
     for line in pill_info_add_queue:
         val = dbm.add_new_pill_ingredient_relationship(line)
         if val == 200:
-            print(f'Relationship between PillID {line["id"]} and IngredientID{line["Material_Info"]} have ben added '
+            print(f'\tRelationship between PillID {line["id"]} and IngredientID {line["Material_Info"]} have ben added '
                   f'to DB')
         else:
-            print(f"ERROR Occurred while adding relationship between PillID {line['id']} and IngredientID{line['Material_Info']} to DB")
-    print(f"{len(pill_info_add_queue)} new Pill-Ingredient relationships and \n\t"
+            print(f"\tERROR Occurred while adding relationship between PillID {line['id']} and IngredientID {line['Material_Info']} to DB")
+    print(f"\t{len(pill_info_add_queue)} new Pill-Ingredient relationships and \n\t"
           f"{len(material_info_add_queue)} new Ingredients have been added to FMP DB")
     return 200
 
@@ -78,8 +78,7 @@ def add_pill_spec(name: str, company: str, type_info: str, consume_info: str, di
             flag &= (item['dose_form'] == type_info)
             flag &= (item['how_to_consume'] == consume_info)
             if flag:
-                print("Perfect Duplicat Found in DB\nPlease check DB")
-                return -9
+                return "Perfect Duplicat Found in DB\nPlease check DB, Nothing added to DB", -9
 
     # proceed
     pill_dict['id'] = int(dbm.data_counter('Pill_Specification')) + 1
@@ -98,8 +97,9 @@ def add_pill_spec(name: str, company: str, type_info: str, consume_info: str, di
 
 def add_new_pill(pill_dict: dict):
     return_val, new_id = add_pill_spec(pill_dict['name'], pill_dict['company'], pill_dict['type_info'], pill_dict['consume_info'], pill_dict['din_code'])
-    print("result from add_pill_spec", return_val)
-    if new_id != -1:
+    print("\tresult from add_pill_spec:\n", return_val)
+    print("====================")
+    if new_id > 0:
         return_val = add_ingredient(pill_dict['ingredient'], pill_dict['din_code'], new_id)
     else:
         print("ERROR Occurred while running add_pill_spec function. Check DATA")
@@ -112,7 +112,7 @@ def add_new_pill(pill_dict: dict):
         return -1
 
 
-new_pill_dict = {'name': 'tester', 'company': 'Andy Yun', 'type_info': 'tester', 'consume_info': 'data_check', 'din_code': '50030441', 'ingredient': {
+new_pill_dict = {'name': 'tester', 'company': 'Andy Yun', 'type_info': 'tester', 'consume_info': 'data_check', 'din_code': '500304412', 'ingredient': {
     'ACETAMINOPHEN': [500, 'kg'],
     'DEXTROMETHORPHAN HYDROBROMIDE': [1, 'T'],
     'New_MateriaL': [99, 'GB']
