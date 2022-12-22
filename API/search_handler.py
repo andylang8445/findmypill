@@ -20,9 +20,8 @@ def search_by_din(din_code: str):
         result_val.append(sub_dict)
     alias_cnt = 1
     if data_cnt > alias_cnt:
-        # check if there is an 'IDENTICAL PILL' in DB
         print("==========================================================================")
-        print("WARNING: Conflict found in DB, DIN should be an UNIQUE value of each PILL")
+        print("WARNING: Conflict found in DB, More than one pill shares the same DIN")
         print("==========================================================================")
         sys.exit(1)
     return data_cnt, result_val

@@ -30,13 +30,13 @@ def add_ingredient(ingredient_dict: dict(), din_code: str, pill_id: int = -1):
     for each_ing in included_ingredient_li:
         ing = str(each_ing).upper()
         flag, resulting_li = sh.search_ingredient_by_name(str(ing))
-        if flag == 1:
-            pill_info_add_queue.append({'id': pill_id, 'Material_Info': resulting_li[str(ing)],
+        if flag:
+            pill_info_add_queue.append({'id': pill_id, 'Material_Info': resulting_li[0][str(ing)],
                                         'amount': f'{ingredient_dict[str(ing)][0]} {ingredient_dict[str(ing)][1]}'})
         else:
             tmp_ingredient_code = int(len(material_info_add_queue) + dbm.data_counter('Material_Info') + 1)
-            pill_info_add_queue.append({'id': pill_id, 'Material_Info': resulting_li[str(ing)],
-                                        'amount': f'{ingredient_dict[str(ing)][0]} {ingredient_dict[str(ing)][1]}'})
+            pill_info_add_queue.append({'id': pill_id, 'Material_Info': tmp_ingredient_code,
+                                        'amount': f'{ingredient_dict[str(each_ing)][0]} {ingredient_dict[str(each_ing)][1]}'})
             material_info_add_queue.append({'id': tmp_ingredient_code, 'name': str(ing)})
     for line in material_info_add_queue:
         val = dbm.add_new_ingredient(line)
@@ -67,10 +67,20 @@ def add_pill_spec(name: str, company: str, type_info: str, consume_info: str, di
     pill_dict['DIN'] = din_code
     pill_dict['type'] = type_info
     pill_dict['consume'] = consume_info
-    counter, _ = sh.search_by_din(str(din_code))
+    counter, conflict_check_li = sh.search_by_din(str(din_code))
     if counter > 0:
         # check if identical stuff are present
-        None
+        for item in conflict_check_li:
+            flag = True
+            flag &= (item['name'] == name)
+            flag &= (item['company_name'] == company)
+            flag &= (item['din_code'] == din_code)
+            flag &= (item['dose_form'] == type_info)
+            flag &= (item['how_to_consume'] == consume_info)
+            if flag:
+                print("Perfect Duplicat Found in DB\nPlease check DB")
+                return -9
+
     # proceed
     pill_dict['id'] = int(dbm.data_counter('Pill_Specification')) + 1
     print(pill_dict)
@@ -102,5 +112,10 @@ def add_new_pill(pill_dict: dict):
         return -1
 
 
-new_pill_dict = {'name': }
-print("result: ", add_pill_spec('tester', 'Andy Yun', 'Object', 'USB', '23', 9999))
+new_pill_dict = {'name': 'tester', 'company': 'Andy Yun', 'type_info': 'tester', 'consume_info': 'data_check', 'din_code': '50030441', 'ingredient': {
+    'ACETAMINOPHEN': [500, 'kg'],
+    'DEXTROMETHORPHAN HYDROBROMIDE': [1, 'T'],
+    'New_MateriaL': [99, 'GB']
+}}
+# print("result: ", add_pill_spec('tester', 'Andy Yun', 'Object', 'USB', '23', 9999))
+print("result: ", add_new_pill(new_pill_dict))

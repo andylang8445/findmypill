@@ -1,0 +1,94 @@
+[
+  {
+    "pill_id": 1,
+    "name": "EXTRA STRENGTH TYLENOL COLD DAYTIME",
+    "ingredient": {
+      "total_number": 3,
+      "0": {
+        "ingredient_id": 1,
+        "ingredient_name": "ACETAMINOPHEN",
+        "ingredient_amount": 500,
+        "ingredient_unit": "mg"
+      },
+      "1": {
+        "ingredient_id": 2,
+        "ingredient_name": "DEXTROMETHORPHAN HYDROBROMIDE",
+        "ingredient_amount": 10,
+        "ingredient_unit": "mg"
+      },
+      "2": {
+        "ingredient_id": 3,
+        "ingredient_name": "PHENYLEPHRINE HYDROCHLORIDE",
+        "ingredient_amount": 5,
+        "ingredient_unit": "mg"
+      }
+    },
+    "din_code": "02276186",
+    "company_name": "JOHNSON & JOHNSON INC",
+    "dose_form": "Tablet",
+    "how_to_consume": "Oral"
+  },
+  {
+    "pill_id": 2,
+    "name": "TYLENOL EXTRA STRENGTH",
+    "ingredient": {
+      "total_number": 1,
+      "0": {
+        "ingredient_id": 1,
+        "ingredient_name": "ACETAMINOPHEN",
+        "ingredient_amount": 500,
+        "ingredient_unit": "mg"
+      }
+    },
+    "din_code": "00559407",
+    "company_name": "JOHNSON & JOHNSON INC",
+    "dose_form": "Tablet",
+    "how_to_consume": "Oral"
+  },
+  {
+    "pill_id": 3,
+    "name": "TYLENOL EXTRA STRENGTH",
+    "ingredient": {
+      "total_number": 1,
+      "0": {
+        "ingredient_id": 1,
+        "ingredient_name": "ACETAMINOPHEN",
+        "ingredient_amount": 500,
+        "ingredient_unit": "mg"
+      }
+    },
+    "din_code": "00559407",
+    "company_name": "JOHNSON & JOHNSON INC",
+    "dose_form": "Suspension",
+    "how_to_consume": "Oral"
+  },
+  {
+    "pill_id": 4,
+    "name": "tester",
+    "ingredient": {
+      "total_number": 3,
+      "0": {
+        "ingredient_id": 1,
+        "ingredient_name": "ACETAMINOPHEN",
+        "ingredient_amount": 500,
+        "ingredient_unit": "kg"
+      },
+      "1": {
+        "ingredient_id": 2,
+        "ingredient_name": "DEXTROMETHORPHAN HYDROBROMIDE",
+        "ingredient_amount": 1,
+        "ingredient_unit": "T"
+      },
+      "2": {
+        "ingredient_id": 4,
+        "ingredient_name": "NEW_MATERIAL",
+        "ingredient_amount": 99,
+        "ingredient_unit": "GB"
+      }
+    },
+    "din_code": "50030441",
+    "company_name": "Andy Yun",
+    "dose_form": "tester",
+    "how_to_consume": "data_check"
+  }
+]

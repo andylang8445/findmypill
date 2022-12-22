@@ -64,13 +64,17 @@ def connection_tester():
         print(f"Name of the pill: {name}, ", end="Ingredients: [")
         mat_li = list()
         for (material_id, amount) in pill_ingredient_cur:
-            tmp = [int(material_id), str(element_dict[int(material_id)]), int(str(amount).split(' ')[0]), str(amount).split(' ')[1]]
+            tmp = {'ingredient_id': int(material_id), 'ingredient_name': str(element_dict[int(material_id)]), 'ingredient_amount': int(str(amount).split(' ')[0]), 'ingredient_unit': str(amount).split(' ')[1]}
             mat_li.append(tmp)
-            print("[ingredient id: %d, name: %s, amount: %d, unit: %s]" % (tmp[0], tmp[1], tmp[2], tmp[3]), end=', ')
+            print("[ingredient id: %d, name: %s, amount: %d, unit: %s]" % (tmp['ingredient_id'], tmp['ingredient_name'], tmp['ingredient_amount'], tmp['ingredient_unit']), end=', ')
         print(f"], Pill id: {id_code}, Dose Form: {dose_form}, Produced By: {company_name}, Route of Administration: {how_to_consume}, DIN code: {din_code}")
         sub_dict['pill_id'] = id_code
         sub_dict['name'] = name
-        sub_dict['ingredient'] = mat_li
+        ingredient_dict_jsonify = dict()
+        ingredient_dict_jsonify['total_number'] = len(mat_li)
+        for i in range(len(mat_li)):
+            ingredient_dict_jsonify[int(i)] = mat_li[i]
+        sub_dict['ingredient'] = ingredient_dict_jsonify
         sub_dict['din_code'] = din_code
         sub_dict['company_name'] = company_name
         sub_dict['dose_form'] = dose_form
