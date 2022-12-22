@@ -112,7 +112,7 @@ def add_new_pill(pill_dict: dict):
         return -1
 
 
-new_pill_dict = {'name': 'tester', 'company': 'Andy Yun', 'type_info': 'tester', 'consume_info': 'data_check', 'din_code': '500304412', 'ingredient': {
+new_pill_dict = {'name': 'tester', 'company': 'Andy Yun', 'type_info': 'USB', 'consume_info': 'data_check', 'din_code': '50030441', 'ingredient': {
     'ACETAMINOPHEN': [500, 'kg'],
     'DEXTROMETHORPHAN HYDROBROMIDE': [1, 'T'],
     'New_MateriaL': [99, 'GB']

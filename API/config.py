@@ -1,5 +1,6 @@
 viewer = {'id': 'viewer_acc', 'pw': 'viewer'}
 adder = {'id': 'adder_acc', 'pw': 'adder'}
+remover = {'id': 'remover_acc', 'pw': 'remover'}
 admin = {'id': 'root', 'pw': 'root'}
 DB = {'host': 'localhost', 'port': 3306, 'db_name': 'FMP'}
 table = {'pill': 'test', 'ingredient': "element"}

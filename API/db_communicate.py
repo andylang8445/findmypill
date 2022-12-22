@@ -21,6 +21,23 @@ def viewer_obj_creator():
     return conn
 
 
+def remover_obj_creator():
+    # Connect to MariaDB Platform
+    try:
+        conn = mariadb.connect(
+            user=c.remover['id'],
+            password=c.remover['pw'],
+            host=c.DB['host'],
+            port=c.DB['port'],
+            database=c.DB['db_name']
+
+        )
+    except mariadb.Error as e:
+        print(f"Error connecting to MariaDB Platform: {e}")
+        sys.exit(1)
+    return conn
+
+
 def adder_obj_creator():
     # Connect to MariaDB Platform
     try:
@@ -198,6 +215,34 @@ def add_new_ingredient(info_dict: dict):
     conn.commit()
     conn.close()
     return 200
+
+
+def remove_operator(source: str, condition: list = []):
+    print(source, condition)
+    query_string = "DELETE FROM "
+    if source in list(c.table_info.values()):
+        query_string += source
+    else:
+        print("Wrong SELECT FROM argument (table name mismatch)")
+        return [-2]
+    if len(condition) == 0:
+        print("Missing Condition in DELETE operation (Cannot be Empty)")
+        return [-1]
+    else:
+        query_string += ' WHERE '
+        for i in range(len(condition)):
+            query_string += condition[i]
+            if i < (len(condition) - 1):
+                query_string += ' and '
+        query_string += ';'
+    print(query_string)
+    conn = remover_obj_creator()
+    remove_cur = conn.cursor()
+    remove_cur.execute(query_string)
+    conn.commit()
+    conn.close()
+    return [200]
+
 
 
 def select_operator(source: str, what: list = ['*'], condition: list = []):

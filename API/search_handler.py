@@ -23,7 +23,6 @@ def search_by_din(din_code: str):
         print("==========================================================================")
         print("WARNING: Conflict found in DB, More than one pill shares the same DIN")
         print("==========================================================================")
-        sys.exit(1)
     return data_cnt, result_val
 
 
