@@ -126,11 +126,11 @@ def add_new_pill(pill_dict: dict):
         print("ERROR Occurred while running add_ingredient, but add_pill_spec executed successfully")
         return -1
 
-
-new_pill_dict = {'name': 'tester', 'company': 'Andy Yun', 'type_info': 'USB', 'consume_info': 'data_check', 'din_code': '50030441', 'ingredient': {
-    'ACETAMINOPHEN': [500, 'kg'],
-    'DEXTROMETHORPHAN HYDROBROMIDE': [1, 'T'],
-    'New_MateriaL': [99, 'GB']
-}}
-# print("result: ", add_pill_spec('tester', 'Andy Yun', 'Object', 'USB', '23', 9999))
-print("result: ", add_new_pill(new_pill_dict))
+if __name__ == "__main__":
+    new_pill_dict = {'name': 'tester', 'company': 'Andy Yun', 'type_info': 'USB', 'consume_info': 'data_check', 'din_code': '50030441', 'ingredient': {
+        'ACETAMINOPHEN': [500, 'kg'],
+        'DEXTROMETHORPHAN HYDROBROMIDE': [1, 'T'],
+        'New_MateriaL': [99, 'GB']
+    }}
+    # print("result: ", add_pill_spec('tester', 'Andy Yun', 'Object', 'USB', '23', 9999))
+    print("result: ", add_new_pill(new_pill_dict))
