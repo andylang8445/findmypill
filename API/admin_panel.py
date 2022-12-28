@@ -20,7 +20,8 @@ def tester():
     pill_info_pict['din_code'] = json_obj['din_code']
     pill_info_pict['ingredient'] = json_obj['ingredient']
     print(pill_info_pict)
-    return f"complete, {str(json_obj)}, {str(type(json_obj))}"
+    return_json_str = f"complete, {str(json_obj)}, {str(type(json_obj))}"
+    return jsonify(pill_info_pict)
 
 
 @app.route('/add_new_pill', methods=['POST'])
