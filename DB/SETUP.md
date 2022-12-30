@@ -3,9 +3,16 @@
 ### 윈도우 사용시
 1. MariaDB 를 설치한 적이 없다면 https://mariadb.org/ 로 이동후 다운받아준다.
 2. 블로그, https://kitty-geno.tistory.com/55 에 나와있는대로 기본세팅을 해준다.
-3. 프로젝트 세팅으로 이동.
+3. 윈도우키를 눌러 MariaDB CLI 를 열어준후 비밀번호를 치고 접속한다.
+4. 프로젝트 세팅으로 이동.
 
 ### 맥 사용시
+1. 만약 Homebrew 가 설치되어 있지 않다면 https://brew.sh/index_ko 로 이동해서 설치해준다.
+2. `brew install mariadb` 를 쳐서 mariaDB 를 설치해준다.
+3. MariaDB 서버 를 시작하기 위해 `mysql.server start` 를 쳐준다.
+4. 컴퓨터를 켰을때 자동으로 서버를 키기 위해서 `brew services start mariadb` 를 쳐준다.
+5. 서버가 켜져있을때 `sudo mysql -u root` 를 입력해서 비밀번호를 치고 관리자 계정으로 접속해준다.
+6. 프로젝트 세팅으로 이동.
 
 ### 프로젝트 세팅
 1. `CREATE DATABASE fmp;`
