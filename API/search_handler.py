@@ -61,3 +61,11 @@ def search_ingredient_by_name(ingredient_name: str):
         return False, []
     else:
         return True, return_val
+
+
+def get_ingredient_by_id(id_code: str):
+    val = dbm.select_operator(c.table_info['pill-ingredient'], ['Material_Info'], [f'id = "{id_code}"'])
+    return_val = list()
+    for (mat_code,) in val:
+        return_val.append(str(mat_code))
+    return return_val
