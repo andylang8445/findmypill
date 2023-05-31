@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1083767817947",
+    "project_id": "find-my-pill",
+    "storage_bucket": "find-my-pill.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1083767817947:android:5ed858dab9e7fe51e66efe",
+        "android_client_info": {
+          "package_name": "com.fmp.find_my_pill"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1083767817947-7tkl619edkj37g97re36cmi6jn9e2jd5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fmp.find_my_pill",
+            "certificate_hash": "2bd7cd5d4be29e60fd52c23fd800b20f27b4e074"
+          }
+        },
+        {
+          "client_id": "1083767817947-mj2148ip5p91bhn7rtep4baoobvl2tjj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIpAQciHqozCp1J1mtP1t34jXx0Wf_pT4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1083767817947-mj2148ip5p91bhn7rtep4baoobvl2tjj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
