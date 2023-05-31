@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<body>
+  <button onclick="postData()">생성</button>
+  <script>
+    function postData() {
+    	const xhr = new XMLHttpRequest();
+    	xhr.open("POST", "http://localhost:9000/tester");
+    	xhr.setRequestHeader("content-type", "application/json; charset=UTF-8")
+		//db.json 파일의 posts 객체에 있는 key가 id인 값은 유일한 값이라서 안넣어줘도 자동으로 생성됨.
+    	const data = { name: 'hello', company: 'Andy_Corp', type_info: 'TEST_DATA', consume_info: 'USB-C', din_code: 20959733, ingredient: {NEW_MATERIAL: [50, "kg"]} };
+    	xhr.send(JSON.stringify(data));
+
+    	xhr.onload = () => {
+    		if (xhr.status === 201) {
+    			const res = JSON.parse(xhr.response);
+    			console.log(res);
+    		} else {
+    			console.log(xhr.status, xhr.statusText);
+    		}
+    	}
+    }
+  </script>
+</body>
+</html>

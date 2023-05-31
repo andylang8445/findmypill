@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import db_communicate as dbm
+import search_handler as searcher
 
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
@@ -31,6 +32,29 @@ def get_echo_call(param):
 def post_echo_call():
     param = request.get_json()
     return jsonify(param)
+
+
+@app.route('/search', methods=['POST'])
+def search_from_db():
+    param = request.get_json()
+    request_type = param['search_criteria']
+    request_data = param['search_data']
+    pill_cnt = int
+    pill_data = list()
+    if request_type == 'DIN':
+        pill_cnt, pill_data = searcher.search_by_din(request_data)
+    elif request_type == 'Company':
+        pass
+        # search for given company name
+    elif request_type == 'Name':
+        # search by pill name
+        pass
+    elif request_type == 'Ingredient':
+        # search by pill ingredient
+        pass
+    else:
+        # unknown request
+        pass
 
 
 def do_this():

@@ -32,7 +32,7 @@ def delete_pill(din_code, id_code=-1):
         return f"Pill with ID {remove_target_id} failed to be removed from {c.table_info['pill-name-type']} table", 503
     return f"Pill with ID {remove_target_id} removed successfully", 200
 
+if __name__ == "__main__":
+    msg, code = delete_pill(50030441)
 
-msg, code = delete_pill(50030441)
-
-print(msg, code)
+    print(msg, code)
