@@ -54,6 +54,7 @@ def adder_obj_creator():
         sys.exit(1)
     return add_conn
 
+
 def connection_tester():
     # Connect to MariaDB Platform
     conn = viewer_obj_creator()
@@ -76,15 +77,19 @@ def connection_tester():
         sub_dict = dict()
         pill_ingredient_cur = conn.cursor()
         pill_ingredient_cur.execute(
-            "SELECT %s,%s FROM %s WHERE id=%s;" % ('Material_Info', 'amount', c.table_info['pill-ingredient'], str(id_code))
+            "SELECT %s,%s FROM %s WHERE id=%s;" % (
+            'Material_Info', 'amount', c.table_info['pill-ingredient'], str(id_code))
         )
         print(f"Name of the pill: {name}, ", end="Ingredients: [")
         mat_li = list()
         for (material_id, amount) in pill_ingredient_cur:
-            tmp = {'ingredient_id': int(material_id), 'ingredient_name': str(element_dict[int(material_id)]), 'ingredient_amount': int(str(amount).split(' ')[0]), 'ingredient_unit': str(amount).split(' ')[1]}
+            tmp = {'ingredient_id': int(material_id), 'ingredient_name': str(element_dict[int(material_id)]),
+                   'ingredient_amount': int(str(amount).split(' ')[0]), 'ingredient_unit': str(amount).split(' ')[1]}
             mat_li.append(tmp)
-            print("[ingredient id: %d, name: %s, amount: %d, unit: %s]" % (tmp['ingredient_id'], tmp['ingredient_name'], tmp['ingredient_amount'], tmp['ingredient_unit']), end=', ')
-        print(f"], Pill id: {id_code}, Dose Form: {dose_form}, Produced By: {company_name}, Route of Administration: {how_to_consume}, DIN code: {din_code}")
+            print("[ingredient id: %d, name: %s, amount: %d, unit: %s]" % (
+            tmp['ingredient_id'], tmp['ingredient_name'], tmp['ingredient_amount'], tmp['ingredient_unit']), end=', ')
+        print(
+            f"], Pill id: {id_code}, Dose Form: {dose_form}, Produced By: {company_name}, Route of Administration: {how_to_consume}, DIN code: {din_code}")
         sub_dict['pill_id'] = id_code
         sub_dict['name'] = name
         ingredient_dict_jsonify = dict()
@@ -124,7 +129,6 @@ def data_counter(source: str):
     else:
         print("Wrong SELECT FROM argument (table name mismatch)")
         return -1
-
 
 
 def add_new_pill(info_dict: dict):
@@ -244,7 +248,6 @@ def remove_operator(source: str, condition: list = []):
     return [200]
 
 
-
 def select_operator(source: str, what: list = ['*'], condition: list = []):
     query_string = "SELECT "
     if len(what) == 1:
@@ -277,7 +280,6 @@ def select_operator(source: str, what: list = ['*'], condition: list = []):
     select_cur = conn.cursor()
     select_cur.execute(query_string)
     return select_cur
-
 
 
 def execute_new(query_str: str, data: tuple):
