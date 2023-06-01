@@ -278,6 +278,8 @@ def select_operator(source: str, what: list = ['*'], condition: list = []):
         query_string += ';'
     conn = viewer_obj_creator()
     select_cur = conn.cursor()
+    print("The following is the query string:\n\t")
+    print(query_string)
     select_cur.execute(query_string)
     return select_cur
 
