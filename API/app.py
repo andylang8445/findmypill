@@ -44,17 +44,32 @@ def search_from_db():
     if request_type == 'DIN':
         pill_cnt, pill_data = searcher.search_by_din(request_data)
     elif request_type == 'Company':
-        pass
+        pill_cnt, pill_data = searcher.search_by_company(request_data)
         # search for given company name
     elif request_type == 'Name':
+        pill_cnt, pill_data = searcher.search_by_name(request_data)
         # search by pill name
         pass
     elif request_type == 'Ingredient':
+        exist, ingredient_code = searcher.search_ingredient_by_name(request_data)
+        pill_li = list()
+        if exist:
+            for ing in ingredient_code:
+                item = ing[request_data]
+                _, pill_data = searcher.search_by_ingredient_code(item)
+                for pill in pill_data:
+                    pill_id = pill['pill_id']
+                    _, pill_d = searcher.search_by_pill_id(pill_id)
+                    for i in pill_d:
+                        new_dict: dict = i
+                        new_dict['requested_ingredient_amount'] = pill['amount']
+                        pill_li.append(new_dict)
         # search by pill ingredient
-        pass
+        pill_data = pill_li
     else:
         # unknown request
         pass
+    return jsonify(pill_data)
 
 
 def do_this():
@@ -63,4 +78,4 @@ def do_this():
 
 
 if __name__ == "__main__":
-    app.run(host="localhost", port=8000, debug=True)
+    app.run(host="localhost", port=9000, debug=True)
